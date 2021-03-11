@@ -5,6 +5,8 @@ const path = require('path')//path module in node.js is used to generate proper 
 //process.env is a node.js function to check environment variables 
 const PORT = process.env.PORT || 3000;
 
+const mainRouter = require('./route/index')
+
 //Template engine
 //to make site dynamic template engine is used express has very good apis to handle template engine
 
@@ -18,22 +20,11 @@ console.log(app.get('views'));
 //it can be empty also there is no issue
 app.use(express.static('public'))
 
-app.get('/', (req, res) => {
-    res.render('index', {
-        title: 'My Home Page'
-    })
-})
 
-app.get('/about', (req, res) => {
-    res.render('about', {
-        title: 'My About Page'
-    })
-})
-
-app.get('/download', (req, res) => {
-    res.download(path.resolve(__dirname) + '/views/about.ejs')
-})
-
+app.use(mainRouter)
+//if we want to use prefix like localhost:3000/en/ or localhost:3000/en/about
+//then we have to use
+// app.use('/en',mainRouter)
 
 app.listen(PORT, () => console.log('Listening on port ' + PORT))
 
